@@ -1,0 +1,6 @@
+pandas
+seaborn
+matplotlib
+ibm_db
+jinja2
+schedule
