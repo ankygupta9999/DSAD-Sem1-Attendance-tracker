@@ -1,0 +1,5 @@
+searchID:1010
+searchID:120
+howOften:1025
+howOften:1001
+range:1001:1025
