@@ -7,10 +7,6 @@ import EmpNode
 
 class attendance_tracker:
     
-    EmpId = None  #??? Doubt
-    attCtr = None
-    left = None
-    right = None
     
     def _readEmployeesRec(self, eNode, Eid):
         '''This function reads from the inputPS1.txt file the ids of employees entering and leaving the organization premises. 
@@ -19,24 +15,21 @@ class attendance_tracker:
         then the attendance counter is incremented for every subsequent occurrence of that employee id in the input file. 
         Use a trigger function to call this recursive function from the root node.
         '''
-        # Initial node (root node) indicator
-#        initialNode = True
-        # Open Employeed Rec file
-        attFile = open(r'..\data\inputPS1.txt','r')
-        for line in attFile.readlines():
-            print (line)
-#            if initialNode:
-#                EmpNode(line)
-#            else:
-            EmpNode.EmpNode.insert(self, int(line))
-            
+        if(eNode is None):
+            eNode = EmpNode.EmpNode(Eid)
+        else:
+            eNode.RecordAttendance(Eid)
+        return eNode   
     
 
 if __name__ == "__main__":
-    eNode = 1 # Root node
     Eid = 0
+    eNode = None
+     # Root node
     
-#    emp = EmpNode(self, Eid)
     tracker = attendance_tracker()
-    tracker._readEmployeesRec(eNode, Eid)
-    
+    attFile = open(r'data\inputPS1.txt','r')
+    for employee in attFile.readlines():
+        'print (employee)'
+        eNode = tracker._readEmployeesRec(eNode, int(employee))
+    eNode.PrintEmpList()

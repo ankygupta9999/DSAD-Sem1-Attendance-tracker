@@ -2,7 +2,7 @@
 """
 Created on Tue Dec 10 16:06:31 2019
 
-@author: agupt84
+@author: DSAD Group 41
 """
 
 class EmpNode:
@@ -11,21 +11,36 @@ class EmpNode:
         self.attCtr= 1  #Attendance counter
         self.left = None
         self.right= None
-
-    def insert(self, EId):
-        if self.EmpId:
+        'print("inserting into parent node - " + str(EId))'
+    
+    # Store new Employee record or increment the counter for existing Employee
+    def RecordAttendance(self, EId):
+        " print('EId - ' + str(EId))"
+        " print('EmpId - ' + str(self.EmpId))"
+        if self.EmpId:            
             if EId < self.EmpId:
                 if self.left is None:
+                    'print("inserting into left node - " + str(EId))'
                     self.left = EmpNode(EId)
                 else:
-                    self.left.insert(EId)
+                    self.left.RecordAttendance(EId)
             elif EId > self.EmpId:
                 if self.right is None:
+                    'print("inserting into right node - " + str(EId))'
                     self.right = EmpNode(EId)
                 else:
-                    self.right.insert(EId)
+                    self.right.RecordAttendance(EId)
             elif EId == self.EmpId:
                 self.attCtr += 1
+                'print("Counter (" + str(self.attCtr) +")incremented for- " + str(EId))'
         else:
             self.EmpId = EmpNode(EId)
-            print ('1', self.EmpId, self.attCtr, self.left, self.right)
+            " print ('1', self.EmpId, self.attCtr, self.left, self.right)"
+            
+    # Print the Employee List
+    def PrintEmpList(self):
+        if self.left:
+            self.left.PrintEmpList()
+        print(str(self.EmpId) + ", " + str(self.attCtr)),
+        if self.right:
+            self.right.PrintEmpList()
