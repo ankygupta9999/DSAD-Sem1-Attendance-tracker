@@ -69,3 +69,18 @@ class EmpNode:
         if (self.left == None) and (self.right == None):
             print ("==== Below is the Left (first) and then Right part of the tree built ====")
             print( pTree)
+
+    def SearchEmployee(self, EId):
+        if self is not None & self.EmpId == EId:
+            return self
+        if self.left is not None:
+            return self.left.search(EId)
+        if self.right is not None:
+            return self.right.search(EId)
+        return None
+ 
+ 
+    def EmpCount(self):
+        if self is None:
+            return 0
+        return 1 + EmpCount(self.left) + EmpCount(self.right)
