@@ -33,3 +33,5 @@ if __name__ == "__main__":
         'print (employee)'
         eNode = tracker._readEmployeesRec(eNode, int(employee))
     eNode.PrintEmpList()
+    print ("printing tree now:")
+    eNode.PrintEmpTree("","c","                      ")
