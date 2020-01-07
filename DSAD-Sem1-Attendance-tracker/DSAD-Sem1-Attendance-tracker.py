@@ -148,4 +148,3 @@ if __name__ == "__main__":
         rptCat = report.split(':',1)
         tracker._invokeMethod(rptCat[0], eNode, rptCat[1])
     tracker._frequentVisitorRec(eNode)
-    print ("Replace this with call to headCount method here")
