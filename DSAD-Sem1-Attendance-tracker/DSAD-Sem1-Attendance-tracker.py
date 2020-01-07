@@ -20,27 +20,19 @@ class attendance_tracker:
         # Execute the function
         return func
 
-<<<<<<< HEAD
 #    def _invokeMethod(self, argument, eNode, EId):
     def _invokeMethod(self, argument, eNode, arg1):
-=======
-    def _invokeMethod(self, argument, eNode, EId):
->>>>>>> 9b7226c761c720c2f5bfa1e5b0bf0f8a00ef5c86
         """Dispatch method"""
         method_name = self._getAction(argument)
         # Get the method from 'self'. Default to a lambda.
         method = getattr(self, method_name, lambda: "Invalid action")
         # Call the method as we return it
-<<<<<<< HEAD
 #        return method(eNode, EId)
         if (method_name == 'printRangePresent'):
             args = arg1.split(":")
             return method(int(args[0]), int(args[1]))
         else:
             return method(eNode, arg1)
-=======
-        return method(eNode, EId)
->>>>>>> 9b7226c761c720c2f5bfa1e5b0bf0f8a00ef5c86
 
     def _readEmployeesRec(self, eNode, Eid):
         '''This function reads from the inputPS1.txt file the ids of employees entering and leaving the organization premises. 
@@ -54,7 +46,6 @@ class attendance_tracker:
         else:
             eNode.RecordAttendance(Eid)
         return eNode  
-<<<<<<< HEAD
     
     def _getHeadcountRec(self, eNode):
         '''
@@ -143,91 +134,7 @@ class attendance_tracker:
             if (res != None):
                 print (res.EmpId, ", ", res.attCtr, ", ", ('out' if res.attCtr % 2 == 0 else 'in'))
             StartId += 1
-=======
-    
-    def _getHeadcountRec(self, eNode):
-        '''
-        This function counts the number of unique IDs stored in the tree and prints the employee headcount for the day into the output.txt file as shown below.
-        Total number of employees today: xx
-        Use a trigger function to call this recursive function from the root node.
-        '''
-        print('Total number of employees today: ' + str(eNode.EmpCount()))
->>>>>>> 9b7226c761c720c2f5bfa1e5b0bf0f8a00ef5c86
         
-    
-    def _searchIDRec(self, eNode, EId):
-        '''
-        This function searches whether a particular employee has attended today or not. The function reads the search id from the file promptsPS1.txt where the search id is mentioned with the tag as shown below.
-        searchID:23
-        searchID:22
-        searchID:11
-        The search function is called for every searchID tag the program finds in the promptsPS1.txt file.
-        If the employee id is found it outputs the below string into the outputPS1.txt file
-        Employee id xx is present today.
-        If the employee id is not found it outputs the below string into the outputPS1.txt file
-        Employee id xx is absent today.
-        Use a trigger function to call this recursive function from the root node.
-        '''
-        Emp = eNode.SearchEmp(EId) 
-        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is absent today.'
-        if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is present today.'
-        print(message)
-
-    def _howOften_Rec(self, eNode, EId):
-        '''
-        This function counts the number of times a particular employee swiped today and if the employee is currently in the office or outside.
-        The function reads the id from the file promptsPS1.txt where the search id is mentioned with the tag as shown below.
-        howOften:12
-        howOften:22
-        howOften:11
-        The search function is called for every howOften tag the program finds in the promptsPS1.txt file.
-        If the employee id is found with an odd attendance count the below string is output into the outputPS1.txt file
-        Employee id xx swiped yy times today and is currently in office
-        If the employee id is found with an even attendance count the below string is output into the outputPS1.txt file
-        Employee id xx swiped yy times today and is currently outside office
-        If the employee id is not found it outputs the below string into the outputPS1.txt file
-        Employee id xx did not swipe today.
-        '''
-        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' did not swipe today.'
-        Emp = eNode.SearchEmp(EId) 
-        if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(Emp.EmpId).rstrip("\n\r")
-            message += ' swiped ' + str(Emp.attCtr).rstrip("\n\r") + ' times today'
-            message += ' and is currently ' + ('outside'  if Emp.attCtr%2 == 0 else 'in') + ' office'
-        print(message)
-    
-    def _frequentVisitorRec(self, eNode):
-        '''
-        This function searches for the employee who has swiped the most number of times and outputs the below string into the outputPS1.txt file.
-        Employee id xx swiped the most number of times today with a count of yy
-        Use a trigger function to call this recursive function from the root node. For the sake of the assignment, 
-        you need to display any one of the employee ids if there are more than one employee who have entered maximum number of times. 
-        For example, if employee id 22 and 23 have both visited 3 times, the output should show either 22 or 23.
-        '''
-        Emp = eNode.SearchEmpMostSwiped(0)
-        if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(Emp.EmpId) + ' swiped the most number of times today with a count of ' + str(Emp.attCtr)
-        else:
-            message = 'No Employee swiped today.'
-        print(message)
-    
-    def printRangePresent(self, StartId, EndId):
-        '''
-        This function prints the employee ids in the range StartId to EndId and how often they have entered the organization in a file name outputPS1.txt.
-        The input should be read from the promptsPS1.txt file where the range is mentioned with the tag as shown below.
-        range:23:125
-        If Input range is given as 23 to 125 the output file should show:
-        Range: 23 to 125
-        Employee attendance:
-        23, 1, in
-        41, 3, in
-        121, 2, out
-        For this purpose, the tree needs to be inorder traversed and the id and frequency of the employees in the range must be printed into the file. 
-        If the Id is found in the BT, its frequency cannot be zero as the person had entered the organization at least once.
-        '''
-        print ("Replace this with logic for range report")
-           
 
 if __name__ == "__main__":
     Eid = 0
