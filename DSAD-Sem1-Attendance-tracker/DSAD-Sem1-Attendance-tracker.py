@@ -9,24 +9,24 @@ import EmpNode
 
 class attendance_tracker:
     
-    def _getAction(action):
+    def _getAction(self, action):
         switcher = {
             "searchID": "_searchIDRec",
             "howOften": "_howOften_Rec",
             "range": "printRangePresent",
             }
         # Get the function from switcher dictionary
-        func = switcher.get(argument, lambda: "Invalid argument")
+        func = switcher.get(action, lambda: "Invalid action")
         # Execute the function
         return func
 
     def _invokeMethod(self, argument, eNode, EId):
         """Dispatch method"""
-        method_name = _getAction(argument)
+        method_name = self._getAction(argument)
         # Get the method from 'self'. Default to a lambda.
-        method = getattr(self, method_name, lambda: "Invalid argument")
+        method = getattr(self, method_name, lambda: "Invalid action")
         # Call the method as we return it
-        return method(self, eNode, EId)
+        return method(eNode, EId)
 
     def _readEmployeesRec(self, eNode, Eid):
         '''This function reads from the inputPS1.txt file the ids of employees entering and leaving the organization premises. 
@@ -41,6 +41,15 @@ class attendance_tracker:
             eNode.RecordAttendance(Eid)
         return eNode  
     
+    def _getHeadcountRec(self, eNode):
+        '''
+        This function counts the number of unique IDs stored in the tree and prints the employee headcount for the day into the output.txt file as shown below.
+        Total number of employees today: xx
+        Use a trigger function to call this recursive function from the root node.
+        '''
+        print('Total number of employees today: ' + str(eNode.EmpCount()))
+        
+    
     def _searchIDRec(self, eNode, EId):
         '''
         This function searches whether a particular employee has attended today or not. The function reads the search id from the file promptsPS1.txt where the search id is mentioned with the tag as shown below.
@@ -54,8 +63,11 @@ class attendance_tracker:
         Employee id xx is absent today.
         Use a trigger function to call this recursive function from the root node.
         '''
-        EmpId = eNode.SearchEmployee(EId) 
-        print("Replace this with logic to print message for employee searched.")
+        Emp = eNode.SearchEmp(EId) 
+        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is absent today.'
+        if Emp is not None and Emp.EmpId is not None:
+            message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is present today.'
+        print(message)
 
     def _howOften_Rec(self, eNode, EId):
         '''
@@ -72,7 +84,28 @@ class attendance_tracker:
         If the employee id is not found it outputs the below string into the outputPS1.txt file
         Employee id xx did not swipe today.
         '''
-        print ("Replace this with logic for howOften here")
+        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' did not swipe today.'
+        Emp = eNode.SearchEmp(EId) 
+        if Emp is not None and Emp.EmpId is not None:
+            message = 'Employee id ' + str(Emp.EmpId).rstrip("\n\r")
+            message += ' swiped ' + str(Emp.attCtr).rstrip("\n\r") + ' times today'
+            message += ' and is currently ' + ('outside'  if Emp.attCtr%2 == 0 else 'in') + ' office'
+        print(message)
+    
+    def _frequentVisitorRec(self, eNode):
+        '''
+        This function searches for the employee who has swiped the most number of times and outputs the below string into the outputPS1.txt file.
+        Employee id xx swiped the most number of times today with a count of yy
+        Use a trigger function to call this recursive function from the root node. For the sake of the assignment, 
+        you need to display any one of the employee ids if there are more than one employee who have entered maximum number of times. 
+        For example, if employee id 22 and 23 have both visited 3 times, the output should show either 22 or 23.
+        '''
+        Emp = eNode.SearchEmpMostSwiped(0)
+        if Emp is not None and Emp.EmpId is not None:
+            message = 'Employee id ' + str(Emp.EmpId) + ' swiped the most number of times today with a count of ' + str(Emp.attCtr)
+        else:
+            message = 'No Employee swiped today.'
+        print(message)
     
     def printRangePresent(self, StartId, EndId):
         '''
@@ -108,11 +141,11 @@ if __name__ == "__main__":
     # Below is just to visualize the Tree 
     eNode.PrintEmpTree("","c","                      ")
     
-    eNode.EmpCount()
+    tracker._getHeadcountRec(eNode)
     # Reading promptsPS1.txt file to see what report is needed and accordingly call the respective function:
     rptFile = open(r'data\promptPS1.txt','r')
     for report in rptFile.readlines():
         rptCat = report.split(':',1)
         tracker._invokeMethod(rptCat[0], eNode, rptCat[1])
-    print ("Replace this with call to frequentMethod method here")
+    tracker._frequentVisitorRec(eNode)
     print ("Replace this with call to headCount method here")

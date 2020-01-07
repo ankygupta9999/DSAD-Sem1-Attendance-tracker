@@ -70,17 +70,37 @@ class EmpNode:
             print ("==== Below is the Left (first) and then Right part of the tree built ====")
             print( pTree)
 
-    def SearchEmployee(self, EId):
-        if self is not None & self.EmpId == EId:
-            return self
-        if self.left is not None:
-            return self.left.search(EId)
-        if self.right is not None:
-            return self.right.search(EId)
-        return None
+    def SearchEmp(self, EId):
+        Emp = None
+        if self is not None:
+            if int(self.EmpId) == int(EId):
+                Emp = self
+            if Emp is None and self.left is not None:
+                Emp = self.left.SearchEmp(EId)
+            if Emp is None and self.right is not None:
+                Emp = self.right.SearchEmp(EId)
+        return Emp
  
  
     def EmpCount(self):
-        if self is None:
-            return 0
-        return 1 + EmpCount(self.left) + EmpCount(self.right)
+        count = 0
+        if self is not None:
+            count = 1
+            if self.left is not None:
+                count += self.left.EmpCount()
+            if self.right is not None:
+                count += self.right.EmpCount()
+        return count
+    
+    
+    def SearchEmpMostSwiped(self, count):
+        Emp = None        
+        if self is not None:
+            if int(self.attCtr) > int(count):
+                count = self.attCtr
+                Emp = self
+            if self.left is not None:
+                Emp = self.left.SearchEmpMostSwiped(count) or Emp
+            if self.right is not None:
+                Emp = self.right.SearchEmpMostSwiped(count) or Emp
+        return Emp
