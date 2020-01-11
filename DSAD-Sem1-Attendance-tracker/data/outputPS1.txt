@@ -1,2 +1,21 @@
 Total number of employees today: 11
+Employee id 1020 is present today.
+Employee id 120 is absent today.
+Employee id 1025 is present today.
+Employee id 1010 is absent today.
+Employee id 1011 is present today.
+Employee id 1025 swiped 1 times today and is currently in office
+Employee id 1001 swiped 2 times today and is currently outside office
+Employee id 100 did not swipe today.
+Employee attendance:1001, 2, out
+1002, 2, out
+1005, 1, in
+1006, 1, in
+1007, 1, in
+1008, 3, in
+1011, 1, in
+1020, 2, out
+1021, 2, out
+1023, 1, in
+1025, 1, in
 Employee id 1008 swiped the most number of times today with a count of 3
