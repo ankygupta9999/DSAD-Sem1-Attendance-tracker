@@ -5,35 +5,11 @@
 @author: DSAD Group 41
 """
 # Importing libraries
+import os
 import EmpNode
 
 class attendance_tracker:
     
-    def _getAction(self, action):
-        switcher = {
-            "searchID": "_searchIDRec",
-            "howOften": "_howOften_Rec",
-            "range": "printRangePresent",
-            }
-        # Get the function from switcher dictionary
-        func = switcher.get(action, lambda: "Invalid action")
-        # Execute the function
-        return func
-
-#    def _invokeMethod(self, argument, eNode, EId):
-    def _invokeMethod(self, argument, eNode, arg1):
-        """Dispatch method"""
-        method_name = self._getAction(argument)
-        # Get the method from 'self'. Default to a lambda.
-        method = getattr(self, method_name, lambda: "Invalid action")
-        # Call the method as we return it
-#        return method(eNode, EId)
-        if (method_name == 'printRangePresent'):
-            args = arg1.split(":")
-            return method(int(args[0]), int(args[1]))
-        else:
-            return method(eNode, arg1)
-
     def _readEmployeesRec(self, eNode, Eid):
         '''This function reads from the inputPS1.txt file the ids of employees entering and leaving the organization premises. 
         One employee id should be populated per line (in the input text file) indicating their swipe (entry or exit). 
@@ -53,15 +29,14 @@ class attendance_tracker:
         Total number of employees today: xx
         Use a trigger function to call this recursive function from the root node.
         '''
-        print('Total number of employees today: ' + str(eNode.EmpCount()))
+        rptOut = 'Total number of employees today: ' + str(eNode.EmpCount()) + '\n'
+        outFile.write(rptOut)
         
     
     def _searchIDRec(self, eNode, EId):
         '''
         This function searches whether a particular employee has attended today or not. The function reads the search id from the file promptsPS1.txt where the search id is mentioned with the tag as shown below.
         searchID:23
-        searchID:22
-        searchID:11
         The search function is called for every searchID tag the program finds in the promptsPS1.txt file.
         If the employee id is found it outputs the below string into the outputPS1.txt file
         Employee id xx is present today.
@@ -70,18 +45,16 @@ class attendance_tracker:
         Use a trigger function to call this recursive function from the root node.
         '''
         Emp = eNode.SearchEmp(EId) 
-        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is absent today.'
+        rptOut = 'Employee id ' + str(EId).rstrip("\n\r") + ' is absent today.' + '\n'
         if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(EId).rstrip("\n\r") + ' is present today.'
-        print(message)
+            rptOut = 'Employee id ' + str(EId).rstrip("\n\r") + ' is present today.' + '\n'
+        outFile.write(rptOut)
 
     def _howOften_Rec(self, eNode, EId):
         '''
         This function counts the number of times a particular employee swiped today and if the employee is currently in the office or outside.
         The function reads the id from the file promptsPS1.txt where the search id is mentioned with the tag as shown below.
         howOften:12
-        howOften:22
-        howOften:11
         The search function is called for every howOften tag the program finds in the promptsPS1.txt file.
         If the employee id is found with an odd attendance count the below string is output into the outputPS1.txt file
         Employee id xx swiped yy times today and is currently in office
@@ -90,13 +63,13 @@ class attendance_tracker:
         If the employee id is not found it outputs the below string into the outputPS1.txt file
         Employee id xx did not swipe today.
         '''
-        message = 'Employee id ' + str(EId).rstrip("\n\r") + ' did not swipe today.'
+        rptOut = 'Employee id ' + str(EId).rstrip("\n\r") + ' did not swipe today.' + '\n'
         Emp = eNode.SearchEmp(EId) 
         if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(Emp.EmpId).rstrip("\n\r")
-            message += ' swiped ' + str(Emp.attCtr).rstrip("\n\r") + ' times today'
-            message += ' and is currently ' + ('outside'  if Emp.attCtr%2 == 0 else 'in') + ' office'
-        print(message)
+            rptOut = 'Employee id ' + str(Emp.EmpId).rstrip("\n\r")
+            rptOut += ' swiped ' + str(Emp.attCtr).rstrip("\n\r") + ' times today'
+            rptOut += ' and is currently ' + ('outside'  if Emp.attCtr%2 == 0 else 'in') + ' office' + '\n'
+        outFile.write(rptOut)
     
     def _frequentVisitorRec(self, eNode):
         '''
@@ -108,10 +81,10 @@ class attendance_tracker:
         '''
         Emp = eNode.SearchEmpMostSwiped(0)
         if Emp is not None and Emp.EmpId is not None:
-            message = 'Employee id ' + str(Emp.EmpId) + ' swiped the most number of times today with a count of ' + str(Emp.attCtr)
+            rptOut = 'Employee id ' + str(Emp.EmpId) + ' swiped the most number of times today with a count of ' + str(Emp.attCtr) + '\n'
         else:
-            message = 'No Employee swiped today.'
-        print(message)
+            rptOut = 'No Employee swiped today.' + '\n'
+        outFile.write(rptOut)
     
     def printRangePresent(self, StartId, EndId):
         '''
@@ -122,41 +95,76 @@ class attendance_tracker:
         Range: 23 to 125
         Employee attendance:
         23, 1, in
-        41, 3, in
         121, 2, out
         For this purpose, the tree needs to be inorder traversed and the id and frequency of the employees in the range must be printed into the file. 
         If the Id is found in the BT, its frequency cannot be zero as the person had entered the organization at least once.
         '''
-        print ("Employee attendance:")
-#        startId = int(StartId)
+        outFile.write("Employee attendance:")
         while (StartId <= EndId):
             res = eNode.SearchEmp(StartId)
             if (res != None):
-                print (res.EmpId, ", ", res.attCtr, ", ", ('out' if res.attCtr % 2 == 0 else 'in'))
+                rptOut = str(res.EmpId) + ", " + str(res.attCtr) + ", " + ('out' if res.attCtr % 2 == 0 else 'in') + '\n'
+                outFile.write(rptOut)
             StartId += 1
+        
+    def _closeFiles(self):
+        '''
+        This will close all the files at end.
+        '''
+        attFile.close()
+        rptFile.close()
+        outFile.close()
         
 
 if __name__ == "__main__":
+    # Declaring and initializing variables
     Eid = 0
+    eId = 0
     eNode = None
-     # Root node
-    
+    StartId = 0
+    EndId = 0
+    inputPS1Empty = False
+
     # Creating instance of Main class
     tracker = attendance_tracker()
     
+    # Creating outPut file
+    outFile = open(r'data\outputPS1.txt','w')
+    
     # Reading inputPS1 file to load the day's swipe in/out data and populate the Binary Tree
     attFile = open(r'data\inputPS1.txt','r')
-    for employee in attFile.readlines():
-        'print (employee)'
-        eNode = tracker._readEmployeesRec(eNode, int(employee))
-    eNode.PrintEmpList()
-    # Below is just to visualize the Tree 
-    eNode.PrintEmpTree("","c","                      ")
+    if os.stat(r'data\inputPS1.txt').st_size != 0:
+        for employee in attFile.readlines():
+            eNode = tracker._readEmployeesRec(eNode, int(employee))
+    else:
+        inputPS1Empty = True
+        outFile.write("Nothing to process. Swipe data file is empty. Thus, Tree is empty \n")
+
+    if inputPS1Empty is False:
+        # To get the headcount - This will be print at the start of report by default as given in sample output.
+        tracker._getHeadcountRec(eNode)
+        # Reading promptsPS1.txt file to see what report is needed and accordingly call the respective function:
+        rptFile = open(r'data\promptPS1.txt','r')
+        for report in rptFile.readlines():
+            rptCat = report.split(':',1)
+            eId = rptCat[1]
+            if rptCat[1].count(':') >= 1:
+                args = rptCat[1].split(":")
+                StartId = int(args[0])
+                EndId = int(args[1])        
+            # Nested if else to identify which function to call
+            if rptCat[0] == "range":
+                tracker.printRangePresent(StartId,EndId)
+            elif rptCat[0] == "searchID":
+                tracker._searchIDRec(eNode, eId)
+            elif rptCat[0] == "howOften":
+                tracker._howOften_Rec(eNode, eId)
+            elif rptCat[0] == "frequentVisitor":
+                tracker._frequentVisitorRec(eNode)
+            elif rptCat[0] == "headCount":
+                tracker._getHeadcountRec(eNode) 
+        # To get the frequent visitor record at the last in the record. prints by default.
+        tracker._frequentVisitorRec(eNode)
     
-    tracker._getHeadcountRec(eNode)
-    # Reading promptsPS1.txt file to see what report is needed and accordingly call the respective function:
-    rptFile = open(r'data\promptPS1.txt','r')
-    for report in rptFile.readlines():
-        rptCat = report.split(':',1)
-        tracker._invokeMethod(rptCat[0], eNode, rptCat[1])
-    tracker._frequentVisitorRec(eNode)
+    # Closing all the files
+    tracker._closeFiles()

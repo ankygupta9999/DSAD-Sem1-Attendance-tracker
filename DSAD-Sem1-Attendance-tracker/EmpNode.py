@@ -37,39 +37,6 @@ class EmpNode:
             self.EmpId = EmpNode(EId)
             " print ('1', self.EmpId, self.attCtr, self.left, self.right)"
             
-    # Print the Employee List
-    def PrintEmpList(self):
-        if self.left:
-            self.left.PrintEmpList()
-        print(str(self.EmpId) + ", " + str(self.attCtr)),
-        if self.right:
-            self.right.PrintEmpList()
-            
-        # Print tree structure
-    def PrintEmpTree(self,pTree,pos,spaces):
-        if pos == "c":
-            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
-        elif pos == "l":
-            pTree = pTree + "\n" + spaces + "/   " + "\n"
-            spaces = spaces[4:]
-            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
-        elif pos == "r":
-            pTree = pTree + "\n" + spaces + "\\"  + "\n"
-            spaces = spaces + "  "
-            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
-        
-        if self.left:
-            pos = "l"
-            self.left.PrintEmpTree(pTree, pos, spaces)
-
-        if self.right:
-            pos = "r"
-            self.right.PrintEmpTree(pTree, pos, spaces)
-
-        if (self.left == None) and (self.right == None):
-            print ("==== Below is the Left (first) and then Right part of the tree built ====")
-            print( pTree)
-
     def SearchEmp(self, EId):
         Emp = None
         if self is not None:
@@ -104,3 +71,36 @@ class EmpNode:
             if self.right is not None:
                 Emp = self.right.SearchEmpMostSwiped(count) or Emp
         return Emp
+    
+        # Print the Employee List
+    def PrintEmpList(self):
+        if self.left:
+            self.left.PrintEmpList()
+        print(str(self.EmpId) + ", " + str(self.attCtr)),
+        if self.right:
+            self.right.PrintEmpList()
+            
+        # Print tree structure
+    def PrintEmpTree(self,pTree,pos,spaces):
+        if pos == "c":
+            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
+        elif pos == "l":
+            pTree = pTree + "\n" + spaces + "/   " + "\n"
+            spaces = spaces[4:]
+            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
+        elif pos == "r":
+            pTree = pTree + "\n" + spaces + "\\"  + "\n"
+            spaces = spaces + "  "
+            pTree = pTree + spaces + str(self.EmpId) + " [" + str(self.attCtr) + "]"
+        
+        if self.left:
+            pos = "l"
+            self.left.PrintEmpTree(pTree, pos, spaces)
+
+        if self.right:
+            pos = "r"
+            self.right.PrintEmpTree(pTree, pos, spaces)
+
+        if (self.left == None) and (self.right == None):
+            print ("==== Below is the Left (first) and then Right part of the tree built ====")
+            print( pTree)

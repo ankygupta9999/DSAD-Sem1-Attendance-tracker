@@ -1,0 +1,2 @@
+Total number of employees today: 11
+Employee id 1008 swiped the most number of times today with a count of 3
