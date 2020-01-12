@@ -1,0 +1,7 @@
+Method: _getHeadcountRec	| Complexity: O(n) for Tree with 'n' records.
+Method: _searchIDRec		| Complexity: O(n) for each search.
+Method: _howOften_Rec		| Complexity: O(n) for each search.
+Method: _frequentVisitorRec	| Complexity: O(n) for Tree with 'n' records.
+Method: printRangePresent	| Complexity: O(n^2) for Tree with 'n' records.
+Method: _readEmployeesRec	| Complexity: O(n) while inserting 'n'th record.
+Method: main()			| Complexity: O(n^3) because in worst case, promptPS1 may have n records for printRangePresent method.

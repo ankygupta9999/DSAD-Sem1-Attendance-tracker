@@ -3,6 +3,13 @@
 # coding: utf-8
 """
 @author: DSAD Group 41
+@contribution: 
+    Team Member     Roll Number
+    ===========================
+    Ankit Gupta     2019ad04026
+    Hitesh Gupta	2019ad04027
+    Aditya Mehta	2019ad04031
+    Prateek Sirohi	2019ad04032
 """
 # Importing libraries
 import os
@@ -21,8 +28,8 @@ class attendance_tracker:
             eNode = EmpNode.EmpNode(Eid)
         else:
             eNode.RecordAttendance(Eid)
-        return eNode  
-    
+        return eNode
+
     def _getHeadcountRec(self, eNode):
         '''
         This function counts the number of unique IDs stored in the tree and prints the employee headcount for the day into the output.txt file as shown below.
@@ -129,11 +136,11 @@ if __name__ == "__main__":
     tracker = attendance_tracker()
     
     # Creating outPut file
-    outFile = open(r'data\outputPS1.txt','w')
+    outFile = open(r'outputPS1.txt','w')
     
     # Reading inputPS1 file to load the day's swipe in/out data and populate the Binary Tree
-    attFile = open(r'data\inputPS1.txt','r')
-    if os.stat(r'data\inputPS1.txt').st_size != 0:
+    attFile = open(r'inputPS1.txt','r')
+    if os.stat(r'inputPS1.txt').st_size != 0:
         for employee in attFile.readlines():
             eNode = tracker._readEmployeesRec(eNode, int(employee))
     else:
@@ -144,7 +151,7 @@ if __name__ == "__main__":
         # To get the headcount - This will be print at the start of report by default as given in sample output.
         tracker._getHeadcountRec(eNode)
         # Reading promptsPS1.txt file to see what report is needed and accordingly call the respective function:
-        rptFile = open(r'data\promptPS1.txt','r')
+        rptFile = open(r'promptPS1.txt','r')
         for report in rptFile.readlines():
             rptCat = report.split(':',1)
             eId = rptCat[1]

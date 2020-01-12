@@ -12,10 +12,10 @@ Employee attendance:1001, 2, out
 1005, 1, in
 1006, 1, in
 1007, 1, in
-1008, 3, in
+1008, 4, out
 1011, 1, in
 1020, 2, out
 1021, 2, out
 1023, 1, in
 1025, 1, in
-Employee id 1008 swiped the most number of times today with a count of 3
+Employee id 1008 swiped the most number of times today with a count of 4
